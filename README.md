@@ -20,6 +20,14 @@ Client records are the pillar of Carepatron’s entire platform, so your job is 
 
 You should now have the API running on `localhost:5044` and the UI running on `localhost:3000`
 
+## How to submit your work
+- Email back to us a .zip file with the application, and any notes in the email (see below)
+- Treat this like a real world project - if you’ve only got limited time, what’s the MVP for this?
+- Include any notes you think are relevant
+  - What would you do if you had the whole week to complete this?
+  - What would you do next?
+  - How was this test overall? I.e too hard, too easy, how long it took etc
+ 
 ## Product/User requirements
 - Create a client
   - Capture their profile information (see designs below)
@@ -39,14 +47,6 @@ You should now have the API running on `localhost:5044` and the UI running on `l
 ### Backend requirements
 - Must use a RESTful API to fetch and save data
 - Must use .NET
-
-### Additional information:
-- Email back to us a .zip file with the application, and any notes in the email (see below)
-- Treat this like a real world project - if you’ve only got limited time, what’s the MVP for this?
-- Include any notes you think are relevant
-  - What would you do if you had the whole week to complete this?
-  - What would you do next?
-  - How was this test overall? I.e too hard, too easy, how long it took etc
 
 ## Designs
 
