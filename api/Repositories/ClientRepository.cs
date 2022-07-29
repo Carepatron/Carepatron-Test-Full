@@ -1,35 +1,49 @@
-﻿using System;
-using api.Data;
+﻿using api.Data;
 using api.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace api.Repositories
 {
     public interface IClientRepository
     {
-        Client[] Get();
-        void Create(Client client);
-        void Update(Client client);
+        Task<Client[]> Get();
+        Task Create(Client client);
+        Task Update(Client client);
     }
 
     public class ClientRepository : IClientRepository
     {
-        public ClientRepository()
+        private readonly DataContext dataContext;
+
+        public ClientRepository(DataContext dataContext)
         {
+            this.dataContext = dataContext;
         }
 
-        public void Create(Client client)
+        public async Task Create(Client client)
         {
-            DataStore.Clients.TryAdd(client.Id, client);
+            await dataContext.AddAsync(client);
+            await dataContext.SaveChangesAsync();
         }
 
-        public Client[] Get()
+        public Task<Client[]> Get()
         {
-            return DataStore.Clients.Values.ToArray();
+            return dataContext.Clients.ToArrayAsync();
         }
 
-        public void Update(Client client)
+        public async Task Update(Client client)
         {
-            DataStore.Clients.AddOrUpdate(client.Id, client, (id, client) => client);
+            var existingClient = await dataContext.Clients.FirstOrDefaultAsync(x => x.Id == client.Id);
+
+            if (existingClient == null)
+                return;
+
+            existingClient.FirstName = client.FirstName;
+            existingClient.LastName = client.LastName;
+            existingClient.Email = client.Email;
+            existingClient.PhoneNumber = client.PhoneNumber;
+
+            await dataContext.SaveChangesAsync();
         }
     }
 }

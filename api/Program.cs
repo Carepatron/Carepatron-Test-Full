@@ -1,13 +1,18 @@
-﻿using api.Repositories;
+﻿using api.Data;
+using api.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var services = builder.Services;
+
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+services.AddEndpointsApiExplorer();
+services.AddSwaggerGen();
 
-builder.Services.AddCors(options =>
+// cors
+services.AddCors(options =>
 {
     options.AddDefaultPolicy(builder => builder
         .SetIsOriginAllowedToAllowWildcardSubdomains()
@@ -17,7 +22,12 @@ builder.Services.AddCors(options =>
         .AllowCredentials()
         .Build());
 });
-builder.Services.AddScoped<IClientRepository, ClientRepository>();
+
+// ioc
+services.AddDbContext<DataContext>(options => options.UseInMemoryDatabase(databaseName: "Test"));
+
+services.AddScoped<DataSeeder>();
+services.AddScoped<IClientRepository, ClientRepository>();
 
 var app = builder.Build();
 
@@ -29,12 +39,21 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.MapGet("/clients", (IClientRepository clientRepository) =>
+app.MapGet("/clients", async (IClientRepository clientRepository) =>
 {
-    return clientRepository.Get();
+    return await clientRepository.Get();
 })
 .WithName("get clients");
 
 app.UseCors();
 
+// seed data
+using (var scope = app.Services.CreateScope())
+{
+    var dataSeeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
+
+    dataSeeder.Seed();
+}
+
+// run app
 app.Run();
