@@ -13,7 +13,7 @@ function Clients() {
     getClients().then((clients) =>
       dispatch({ type: "FETCH_ALL_CLIENTS", data: clients })
     );
-  }, []);
+  }, [dispatch]);
 
   return (
     <Page>
