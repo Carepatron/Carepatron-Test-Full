@@ -102,3 +102,30 @@ dist
 
 # TernJS port file
 .tern-port
+
+.idea/
+.vscode/
+.vs/
+**/.DS_Store
+
+bin/
+
+Debug/
+obj/
+
+**dist/
+node_modules/
+ui/build
+.DS_Store
+ui/*.tgz
+ui/template/src/__tests__/__snapshots__/
+ui/lerna-debug.log
+ui/npm-debug.log*
+.DS_Store
+ui/cypress/screenshots/*
+ui/cypress/videos/*
+
+.serverless/
+*.log
+
+**/DontCommit.sql
