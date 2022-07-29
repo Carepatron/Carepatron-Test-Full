@@ -64,16 +64,16 @@ function call<T>(
       return response.data;
     })
     .catch((error) => {
-      const { response } = error;
-
       throw new Error(error.response);
     });
 }
 
-export default {
+const apiClient = {
   get: apiGet,
   post: apiPost,
   put: apiPut,
   patch: apiPatch,
   delete: apiDelete,
 };
+
+export default apiClient;

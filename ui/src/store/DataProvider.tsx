@@ -4,11 +4,10 @@ const initialState: IApplicationState = {
   clients: [],
 };
 
-export const DispatchContext = createContext<React.Dispatch<Action>>(
-  // @ts-ignore
-  null
-);
-export const StateContext = createContext<IApplicationState>(
+export const StateContext = createContext<{
+  state: IApplicationState;
+  dispatch: React.Dispatch<Action>;
+}>(
   // @ts-ignore
   null
 );
@@ -38,11 +37,12 @@ export default function DataProvider({
 }) {
   const [state, dispatch] = useReducer(reducer, initialState);
 
+  const value = {
+    state,
+    dispatch,
+  };
+
   return (
-    <StateContext.Provider value={state}>
-      <DispatchContext.Provider value={dispatch}>
-        {children}
-      </DispatchContext.Provider>
-    </StateContext.Provider>
+    <StateContext.Provider value={value}>{children}</StateContext.Provider>
   );
 }

@@ -1,19 +1,19 @@
-import { useContext, useEffect } from "react";
+import { memo, useContext, useEffect } from "react";
 import { Paper, Typography } from "@mui/material";
-import { DispatchContext, StateContext } from "../../store/DataProvider";
+import { StateContext } from "../../store/DataProvider";
 import Page from "../../components/Page";
 import ClientTable from "./ClientTable";
 import { getClients } from "../../services/api";
 
-export default function Clients() {
-  const { clients } = useContext(StateContext);
-  const dispatch = useContext(DispatchContext);
+function Clients() {
+  const { state, dispatch } = useContext(StateContext);
+  const { clients } = state;
 
   useEffect(() => {
     getClients().then((clients) =>
       dispatch({ type: "FETCH_ALL_CLIENTS", data: clients })
     );
-  }, [dispatch]);
+  }, []);
 
   return (
     <Page>
@@ -26,3 +26,5 @@ export default function Clients() {
     </Page>
   );
 }
+
+export default memo(Clients);

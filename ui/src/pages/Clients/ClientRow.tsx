@@ -1,5 +1,4 @@
 import { TableCell, TableRow } from "@mui/material";
-import { useNavigate } from "react-router-dom";
 
 export interface IProps {
   client: IClient;
@@ -7,8 +6,6 @@ export interface IProps {
 
 export default function ClientListItem({ client }: IProps) {
   const { id, firstName, lastName, email, phoneNumber } = client;
-
-  const navigate = useNavigate();
 
   return (
     <TableRow

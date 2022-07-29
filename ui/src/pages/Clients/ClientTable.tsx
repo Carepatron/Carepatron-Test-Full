@@ -20,7 +20,7 @@ export default function BasicTable({ clients }: { clients: IClient[] }) {
         </TableHead>
         <TableBody>
           {clients.map((client) => (
-            <ClientRow client={client} />
+            <ClientRow key={client.id} client={client} />
           ))}
           {!clients ||
             (!clients.length && (
