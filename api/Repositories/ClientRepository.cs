@@ -14,16 +14,23 @@ namespace api.Repositories
     public class ClientRepository : IClientRepository
     {
         private readonly DataContext dataContext;
+        private readonly IEmailRepository emailRepository;
+        private readonly IDocumentRepository documentRepository;
 
-        public ClientRepository(DataContext dataContext)
+        public ClientRepository(DataContext dataContext, IEmailRepository emailRepository, IDocumentRepository documentRepository)
         {
             this.dataContext = dataContext;
+            this.emailRepository = emailRepository;
+            this.documentRepository = documentRepository;
         }
 
         public async Task Create(Client client)
         {
             await dataContext.AddAsync(client);
             await dataContext.SaveChangesAsync();
+
+            await emailRepository.Send(client.Email, "Hi there - welcome to my Carepatron portal.");
+            await documentRepository.SyncDocumentsFromExternalSource(client.Email);
         }
 
         public Task<Client[]> Get()
@@ -37,6 +44,12 @@ namespace api.Repositories
 
             if (existingClient == null)
                 return;
+
+            if (existingClient.Email != client.Email)
+            {
+                await emailRepository.Send(client.Email, "Hi there - welcome to my Carepatron portal.");
+                await documentRepository.SyncDocumentsFromExternalSource(client.Email);
+            }
 
             existingClient.FirstName = client.FirstName;
             existingClient.LastName = client.LastName;

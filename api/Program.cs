@@ -28,6 +28,8 @@ services.AddDbContext<DataContext>(options => options.UseInMemoryDatabase(databa
 
 services.AddScoped<DataSeeder>();
 services.AddScoped<IClientRepository, ClientRepository>();
+services.AddScoped<IEmailRepository, EmailRepository>();
+services.AddScoped<IDocumentRepository, DocumentRepository>();
 
 var app = builder.Build();
 
